@@ -4,6 +4,12 @@ mixin postInfo(item)
         if item.from && (is_home() || is_post())
             a.post-from(href=item.from target="_blank" title=item.from) 翻译 · 原文地址
 
+mixin postTags(item)
+    if page.tags
+        .tags
+            for tag in page.tags.toArray()
+                a(href=url_for(tag.path))= tag.name
+
 //- Index Page
 mixin posts()
     ul.home.post-list
@@ -28,7 +34,7 @@ mixin postList()
             - var itemYear = date(item.date, 'YYYY') - 0;
             - change = year !== itemYear;
             - year = change ? itemYear : year;
-            if change 
+            if change
                 h2.archive-year!= year
             .post-item
                 +postInfo(item)
@@ -45,3 +51,4 @@ mixin post(item)
             +postInfo(item)
             .post-content
                 != item.content
+            +postTags(item)
